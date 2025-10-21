@@ -21,6 +21,12 @@ data = [
     {"ID": 2, "Name": "Dolapo Onifade", "track": "AI Developer", "age": 26, "comments": "Fuck you"}
 ]
 
+def get_dic(id):
+    for i, dic in enumerate(data):
+        if dic["ID"] == id:
+            return i
+
+
 @app.get("/")
 def get_posts():
     return data
@@ -40,18 +46,22 @@ def post(pay_load: format_data):
 
 @app.put("/users/{id}")
 def update_post(payload: format_data, id: int):
-    data[id] = payload.model_dump()
+    spec_id = get_dic(id)
+    data[spec_id] = payload.model_dump()
+    data[spec_id]["ID"] = id
     return data
 
 
 @app.patch("/users/{id}")
 def update_spec_post(payload:dict, id: int):
-    data[id].update(payload.model_dump())
+    spec_id = get_dic(id)
+    data[spec_id].update(payload)
     return data
 
 @app.delete("/users/{id}")
 def delete_post(id: int):
-    data.remove(data[id])
+    spec_id = get_dic(id)
+    data.remove(data[spec_id])
     return data
 
 if __name__ == "__main__":

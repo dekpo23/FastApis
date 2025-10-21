@@ -33,7 +33,7 @@ def get_posts():
 
 @app.get("/{id}")
 def get_spec_posts(id: int):
-    target_data = data[id]
+    target_data = data[get_dic(id)]
     return target_data
 
 @app.post("/users")
